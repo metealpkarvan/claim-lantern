@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A claim-by-claim evidence desk for reviewing AI answers."
+    />
+    <meta name="theme-color" content="#ad5717" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <title>Claim Lantern — Mete Alp Karvan</title>
+    <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="lantern">
+    <a class="skip" href="#main"
+      ><span data-tr="İçeriğe geç" data-en="Skip to content"
+        >İçeriğe geç</span
+      ></a
+    >
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="./"
+          ><img src="assets/icon.svg" alt="" />Claim Lantern</a
+        >
+        <nav class="nav" aria-label="App">
+          <a href="https://github.com/metealpkarvan/claim-lantern">GitHub ↗</a
+          ><button id="language" type="button" class="quiet">EN</button>
+        </nav>
+      </header>
+      <main id="main">
+        <section class="intro">
+          <div>
+            <div class="eyebrow">A SOURCE IS A START · REVIEW IS THE WORK</div>
+            <h1>Claim Lantern</h1>
+            <p>
+              <span
+                data-tr="AI yanıtlarını iddia ve kaynak bazında inceleyen kanıt masası."
+                data-en="A claim-by-claim evidence desk for reviewing AI answers."
+                >AI yanıtlarını iddia ve kaynak bazında inceleyen kanıt
+                masası.</span
+              >
+            </p>
+          </div>
+          <span class="pill"
+            ><span
+              data-tr="Hesapsız · cihazında çalışır"
+              data-en="No account · runs on your device"
+              >Hesapsız · cihazında çalışır</span
+            ></span
+          >
+        </section>
+        <div class="split">
+          <aside class="panel">
+            <h2>
+              <span data-tr="İnceleme dosyası" data-en="Review file"
+                >İnceleme dosyası</span
+              >
+            </h2>
+            <div class="field">
+              <label for="title"
+                ><span data-tr="Dosya adı" data-en="File name"
+                  >Dosya adı</span
+                ></label
+              ><input id="title" maxlength="120" />
+            </div>
+            <div class="field">
+              <label for="input"
+                ><span
+                  data-tr="İncelenecek iddialar: her satıra bir tane"
+                  data-en="Claims to review: one per line"
+                  >İncelenecek iddialar: her satıra bir tane</span
+                ></label
+              ><textarea id="input" maxlength="40000" rows="10"></textarea>
+            </div>
+            <div class="actions">
+              <button id="extract" class="primary">
+                <span
+                  data-tr="İnceleme kartları oluştur"
+                  data-en="Create review cards"
+                  >İnceleme kartları oluştur</span
+                ></button
+              ><button id="demo" class="quiet">
+                <span data-tr="Örneği dene" data-en="Try a sample"
+                  >Örneği dene</span
+                >
+              </button>
+            </div>
+            <div class="metrics">
+              <div class="metric">
+                <strong id="total">0</strong
+                ><span data-tr="İddia" data-en="Claims">İddia</span>
+              </div>
+              <div class="metric">
+                <strong id="reviewed">0</strong
+                ><span data-tr="İncelendi" data-en="Reviewed">İncelendi</span>
+              </div>
+            </div>
+            <div class="notice">
+              <span
+                data-tr="Bir bağlantı, iddianın doğru olduğunu kanıtlamaz. Kaynağın ne söylediğini alıntı veya notla kaydet; sonra kendi değerlendirmeyi seç."
+                data-en="A link alone does not prove a claim. Record what the source says with a quote or note, then choose your own assessment."
+                >Bir bağlantı, iddianın doğru olduğunu kanıtlamaz. Kaynağın ne
+                söylediğini alıntı veya notla kaydet; sonra kendi
+                değerlendirmeyi seç.</span
+              >
+            </div>
+            <div class="toolbar">
+              <button id="report">
+                <span
+                  data-tr="İnceleme raporu indir"
+                  data-en="Download review report"
+                  >İnceleme raporu indir</span
+                >
+              </button>
+            </div>
+          </aside>
+          <section>
+            <div class="bar">
+              <h2>
+                <span data-tr="Kanıt masası" data-en="Evidence desk"
+                  >Kanıt masası</span
+                >
+              </h2>
+              <div>
+                <label for="filter" class="visually-hidden">Filter</label
+                ><select id="filter">
+                  <option value="all" data-en="All" data-tr="Tümü">Tümü</option>
+                  <option
+                    value="unchecked"
+                    data-en="Unchecked"
+                    data-tr="Bekliyor"
+                  >
+                    Bekliyor
+                  </option>
+                  <option
+                    value="supported"
+                    data-en="Supported"
+                    data-tr="Destekleniyor"
+                  >
+                    Destekleniyor
+                  </option>
+                  <option
+                    value="contradicted"
+                    data-en="Contradicted"
+                    data-tr="Çelişiyor"
+                  >
+                    Çelişiyor
+                  </option>
+                  <option
+                    value="inconclusive"
+                    data-en="Inconclusive"
+                    data-tr="Belirsiz"
+                  >
+                    Belirsiz
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div id="claims" class="stack"></div>
+          </section>
+        </div>
+        <div class="toolbar">
+          <button id="backup">
+            <span data-tr="JSON yedek indir" data-en="Download JSON backup"
+              >JSON yedek indir</span
+            ></button
+          ><label
+            for="import"
+            class="visually-hidden"
+            data-tr="Yedek yükle"
+            data-en="Import backup"
+            >Yedek yükle</label
+          ><input
+            id="import"
+            type="file"
+            accept=".json,application/json"
+          /><button id="clear" class="quiet danger">
+            <span data-tr="Yerel veriyi sil" data-en="Clear local data"
+              >Yerel veriyi sil</span
+            >
+          </button>
+        </div>
+      </main>
+      <footer class="footer">
+        <details>
+          <summary>
+            <span
+              data-tr="Nasıl çalışır? Gizlilik ve sınırlar"
+              data-en="How it works · privacy and limits"
+              >Nasıl çalışır? Gizlilik ve sınırlar</span
+            >
+          </summary>
+          <p>
+            <span
+              data-tr="Bu araç iddiaları otomatik doğrulamaz, internette kaynak aramaz ve doğruluk puanı vermez. İnceleme durumları senin değerlendirmendir. Metin, bağlantı, alıntı ve notlar yalnızca bu tarayıcıda saklanır. Dış bağlantılar ancak tıklarsan açılır. Yedek dosyaları ve raporlar hassas bilgi içerebilir."
+              data-en="This tool does not automatically fact-check, search for sources or assign truth scores. Review statuses are your assessments. Text, links, quotes and notes stay in this browser. External links open only when clicked. Backups and reports may contain sensitive information."
+              >Bu araç iddiaları otomatik doğrulamaz, internette kaynak aramaz
+              ve doğruluk puanı vermez. İnceleme durumları senin
+              değerlendirmendir. Metin, bağlantı, alıntı ve notlar yalnızca bu
+              tarayıcıda saklanır. Dış bağlantılar ancak tıklarsan açılır. Yedek
+              dosyaları ve raporlar hassas bilgi içerebilir.</span
+            >
+          </p>
+          <p>
+            <span
+              data-tr="Örnek veriler kurgusaldır. Bu bir X/Twitter entegrasyonu değildir. Araştırma kaynakları, tasarım gerekçeleri ve testler GitHub deposunda açıklanır."
+              data-en="Sample data is fictional. This is not an X/Twitter integration. Research sources, design decisions and tests are documented in the repository."
+              >Örnek veriler kurgusaldır. Bu bir X/Twitter entegrasyonu
+              değildir. Araştırma kaynakları, tasarım gerekçeleri ve testler
+              GitHub deposunda açıklanır.</span
+            >
+          </p>
+          <a
+            href="https://github.com/metealpkarvan/claim-lantern/blob/main/docs/RESEARCH.md"
+            ><span
+              data-tr="Araştırma notlarını oku"
+              data-en="Read the research notes"
+              >Araştırma notlarını oku</span
+            >
+            ↗</a
+          >
+        </details>
+        <div>© 2026 Mete Alp Karvan · MIT · v1.0.0</div>
+      </footer>
+    </div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
