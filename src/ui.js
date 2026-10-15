@@ -99,27 +99,42 @@ export async function copy(text) {
     );
   }
 }
+// The current 100-claim schema can approach 8.5 MB when JSON escapes bounded
+// text fields (up to six UTF-8 bytes per UTF-16 unit). Import and export share
+// this cap so every valid review can be restored, including escaped text.
+export const MAX_BACKUP_BYTES = 10_000_000;
+const backupBytes = (text) => new TextEncoder().encode(text).byteLength;
+const backupSizeError = () =>
+  new Error(
+    t("En fazla 10 MB JSON dosyası seç.", "Choose a JSON file up to 10 MB."),
+  );
+export function serializeBackup(kind, data) {
+  const result = JSON.stringify({ kind, version: 1, data }, null, 2);
+  if (backupBytes(result) > MAX_BACKUP_BYTES) throw backupSizeError();
+  return result;
+}
 export function backup(kind, data) {
   download(
     `${kind}-backup.json`,
-    JSON.stringify({ kind, version: 1, data }, null, 2),
+    serializeBackup(kind, data),
     "application/json",
   );
 }
 export async function readBackup(file, kind, validate) {
-  if (!file || file.size > 1000000)
-    throw new Error(
-      t("En fazla 1 MB JSON dosyası seç.", "Choose a JSON file up to 1 MB."),
-    );
-  const parsed = JSON.parse(await file.text());
-  if (parsed.kind !== kind || parsed.version !== 1)
+  if (!file || file.size > MAX_BACKUP_BYTES) throw backupSizeError();
+  const raw = await file.text();
+  if (backupBytes(raw) > MAX_BACKUP_BYTES) throw backupSizeError();
+  const parsed = JSON.parse(raw);
+  if (!parsed || parsed.kind !== kind || parsed.version !== 1)
     throw new Error(
       t(
         "Bu uygulamaya ait sürüm 1 yedeği gerekli.",
         "A version 1 backup for this app is required.",
       ),
     );
-  return validate(parsed.data);
+  const data = validate(parsed.data);
+  serializeBackup(kind, data);
+  return data;
 }
 export function safeUrl(value) {
   try {

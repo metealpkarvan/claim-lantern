@@ -16,9 +16,19 @@ AI yanıtlarını iddia ve kaynak bazında inceleyen kanıt masası.
 
 EN/TR düğmesi dili değiştirir. Örnek düğmesi kurgusal veriler yükler. İlk başarılı çevrimiçi açılıştan sonra uygulama dosyaları aynı tarayıcıda çevrimdışı kullanım için önbelleğe alınır.
 
+## İncelemeyi yedekle ve geri yükle
+
+1. Tarayıcı değiştirmeden veya incelemenin yerini başka verilerle değiştirmeden önce JSON yedeği indir. Dosyayı tekrar bulabileceğin bir yerde sakla.
+2. Hedef uygulamada **Yedek yükle** alanından JSON dosyasını seç. Önce uygulama kimliği, sürüm, dosya boyutu ve incelemenin tamamının şeması doğrulanır.
+3. İncelemeyi yüklemek için değiştirme onayını ver; mevcut incelemeyi korumak için iptal et. İçe aktarma kartları birleştirmez, incelemenin yerini alır.
+
+1.0.1 sürümünde JSON indirme ve içe aktarma için aynı **10.000.000 baytlık sınır (ondalık 10 MB)** kullanılır; boyut UTF-8 dosya baytlarıyla ölçülür. Bu sürümün dışa aktardığı geçerli incelemeler; uzun kanıt notları, Türkçe ve diğer çok baytlı metinler ile JSON içinde kaçışla yazılan karakterler dahil, kendi içe aktarıcısına sığar. 100 iddia sınırı, alan uzunlukları ve kanıt koşulları korunur. Sürüm 1 yedekleri desteklenmeye devam eder.
+
+Tarayıcının yerel kayıt kotası ayrıdır; yedek geçerli olsa da kayıt alanı dolu veya erişilemez olabilir. Yerel kayıt başarısız olursa indirdiğin JSON dosyasını sakla. Yedek yüklemek, tarayıcıda kalıcı kaydı garanti etmez.
+
 ## İndir ve yerelde çalıştır
 
-Canlı demo için hesap veya kurulum gerekmez. Releases bölümündeki **claim-lantern-v1.0.0.zip** dosyasını indir, çıkar ve çıkarılan klasörde çalıştır:
+Canlı demo için hesap veya kurulum gerekmez. Releases bölümündeki **claim-lantern-v1.0.1.zip** dosyasını indir, çıkar ve çıkarılan klasörde çalıştır:
 
     python3 -m http.server 8080 --bind 127.0.0.1
 

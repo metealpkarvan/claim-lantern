@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { esc, safeUrl, readBackup } from "../src/ui.js";
+import { esc, safeUrl, readBackup, MAX_BACKUP_BYTES } from "../src/ui.js";
 test("HTML and attribute delimiters escaped", () =>
   assert.equal(
     esc("<img src=\"x\" onerror='x'>&"),
@@ -34,7 +34,7 @@ test("oversized backup rejected before reading", async () => {
   await assert.rejects(
     readBackup(
       {
-        size: 1000001,
+        size: MAX_BACKUP_BYTES + 1,
         text: async () => {
           read = true;
         },

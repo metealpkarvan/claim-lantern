@@ -1,4 +1,4 @@
-const CACHE = 'claim-lantern-v1.0.0';
+const CACHE = 'claim-lantern-v1.0.1';
 const FILES = ['./','./index.html','./styles.css','./src/app.js','./src/core.js','./src/ui.js','./assets/icon.svg','./manifest.webmanifest'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES))));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith('claim-lantern-') && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim())));

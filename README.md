@@ -20,11 +20,21 @@ A small evidence desk that separates claim, source excerpt and reviewer judgment
 4. Choose unchecked, source supports, source contradicts or inconclusive. Supported/contradicted requires a link plus an excerpt or note.
 5. Filter pending work, save reviews and export a Markdown audit report or JSON backup.
 
+## Back up and restore a review
+
+1. Download a JSON backup before moving browsers or replacing a review. Keep that file somewhere you can find again.
+2. In the destination app, choose **Import backup** and select the JSON file. The app checks its identity, version, size and complete review schema first.
+3. Confirm replacement to load the review, or cancel to keep the current review. Import replaces the review; it does not merge cards.
+
+Version 1.0.1 uses the same **10,000,000-byte limit (10 MB, decimal)** for JSON downloads and imports, measured as UTF-8 file bytes. A valid review exported by this version fits its importer, including large evidence notes, Turkish and other multibyte text, and characters escaped by JSON. The existing limits of 100 claims, field lengths and evidence requirements still apply. Version 1 backups remain supported.
+
+Browser storage has its own quota and can be unavailable even when a backup is valid. Keep the downloaded JSON file if a local save fails; a backup import does not guarantee persistent browser storage.
+
 Switch between Turkish and English. The sample button loads explicitly fictional data. After one successful online load, the service worker caches the app shell for offline reopening in the same browser. Browser support and storage settings vary; export important records.
 
 ## Download and run locally
 
-The public demo needs no account or installation. Download **claim-lantern-v1.0.0.zip** from Releases, extract it and serve the extracted directory:
+The public demo needs no account or installation. Download **claim-lantern-v1.0.1.zip** from Releases, extract it and serve the extracted directory:
 
     python3 -m http.server 8080 --bind 127.0.0.1
 

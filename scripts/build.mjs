@@ -9,6 +9,10 @@ for (const file of [
   "assets",
   "src",
   "LICENSE",
+  "README.md",
+  "README.tr.md",
+  "CHANGELOG.md",
+  "docs",
 ])
   await cp(file, `dist/${file}`, { recursive: true });
 console.log("Static app built in dist/");
